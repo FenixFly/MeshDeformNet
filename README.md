@@ -1,5 +1,20 @@
 # MeshDeformNet
 
+## Install and run
+
+python data/data2tfrecords.py --folder D:/_diss/Dataset/MMWHS2 --modality ct mr --size 128 128 128 --folder_postfix _train --deci_rate 0 --smooth_ite 50 --out_folder records_output --seg_id 1 2 3 4 5 6 7
+
+
+python train_gcn.py --im_train D:/_diss/MeshDeformNet/records_output/ct_train/ --im_val D:/_diss/MeshDeformNet/records_output/ct_val/ --mesh_txt  data/template/mesh_info_ct.txt data/template/mesh_info_mr.txt --mesh data/template/data_aux.dat --attr_trains '' --attr_vals '' --train_data_weights 1.0 --val_data_weights 1.0 --output train_output --modality ct --num_epoch 100 --batch_size 1 --lr 0.001 --size 128 128 128 --weights 0.29336324 0.05 0.46902252 0.16859047 --mesh_ids 0 1 2 3 4 5 6 --num_seg 1 --seg_weight 100.0
+
+
+
+python train_gcn.py --im_train /mnt/d/_diss/MeshDeformNet/records_output/ct_train/ --im_val /mnt/d/_diss/MeshDeformNet/records_output/ct_val/ --mesh_txt  data/template/mesh_info_ct.txt data/template/mesh_info_mr.txt --mesh data/template/data_aux.dat --attr_trains '' --attr_vals '' --train_data_weights 1.0 --val_data_weights 1.0 --output train_output --modality ct --num_epoch 100 --batch_size 1 --lr 0.001 --size 128 128 128 --weights 0.29336324 0.05 0.46902252 0.16859047 --mesh_ids 0 1 2 3 4 5 6 --num_seg 1 --seg_weight 100.0
+
+
+## Repo
+
+
 This repository contains the source code for our paper:
 
 Kong, F., Wilson, N., Shadden, S.C.: A deep-learning approach for direct whole-heart mesh reconstruction (2021)
