@@ -20,6 +20,7 @@ import argparse
 try:
     from mpi4py import MPI
 except Exception as e: print(e)
+from pathlib import Path
 
 def generate_seg_aug_dataset(im_dir, mask_dir, out_dir, modality, mode='train', AUG_NUM=10,comm=None,rank=0):
     params_affine = {
@@ -80,8 +81,12 @@ def generate_seg_aug_dataset(im_dir, mask_dir, out_dir, modality, mode='train', 
         nums_scatter = comm.scatter(nums_scatter, root = 0)
         fns_masks_scatter = comm.scatter(fns_masks_scatter, root = 0)
         fns_scatter  = comm.scatter(fns_scatter, root = 0)
-    for fn, fn_mask, aug_id in zip(fns_scatter, fns_masks_scatter, nums_scatter):
-        name = os.path.basename(fn).split(os.extsep, 1)[0]
+
+    for fn, fn_mask, aug_id in zip(fns_scatter[0], fns_masks_scatter[0], nums_scatter[0]):
+
+        print('Augmenting next file:',fn)
+
+        name = os.path.basename(Path(fn)).split(os.extsep, 1)[0]
         name_seg = os.path.basename(fn_mask).split(os.extsep, 1)[0]
         assert name == name_seg , "Image and mask file names do not match!"
         image = sitk.ReadImage(fn)
